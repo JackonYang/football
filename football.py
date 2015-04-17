@@ -4,6 +4,7 @@ import re
 import json
 import codecs
 import time
+import sys
 
 from httplib2 import Http
 from jinja2 import Environment, PackageLoader
@@ -68,7 +69,7 @@ def disp(host=u'host', guest=u'guest', start_time='', **kwargs):
 def read_ignore():
     matches = []
     try:
-        with codecs.open(ignore_filename, 'r', 'utf8') as f:
+        with codecs.open(ignore_filename, 'r', sys.getfilesystemencoding()) as f:
             matches = [line.strip() for line in f.readlines()]
     except:
         pass
