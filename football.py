@@ -109,8 +109,6 @@ def main(url):
     topn_guest = filter_topn(content['orig_guest'], content['exclude_match'], content['topn'])
     topn_vs = filter_topn(content['orig_vs'], content['exclude_match'], content['topn'])
 
-    content['topn_match'] = merge_list(topn_host, topn_guest, topn_vs)
-
     calc_host = calc(topn_host)
     calc_guest = calc(topn_guest)
     calc_vs = calc(topn_vs)

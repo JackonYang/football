@@ -79,12 +79,12 @@
                 </tr>
             </thead>
             <tbody>
-                {% for host, guest, vs in topn_match %}
+                {% for i in range(topn) %}
                 <tr>
                     <th scope="row">{{ loop.index }}</th>
-                    <td>{{ host }}</td>
-                    <td>{{ guest }}</td>
-                    <td>{{ vs }}</td>
+                    <td><span id="host-row{{ loop.index }}">-</span></td>
+                    <td><span id="guest-row{{ loop.index }}">-</span></td>
+                    <td><span id="vs-row{{ loop.index }}">-</span></td>
                 </tr>
                 {% endfor %}
             </tbody>
