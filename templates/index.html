@@ -32,6 +32,23 @@
         <li>总平均: <span id='res-avg-total'></span></li>
     </ul>
 
+
+    <div class="vs-predict">
+        <table class="table table-bordered">
+            <thead>
+                <tr class='head-vs-predict'>
+                    <th>交锋固定</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class='tbl-vs-predict'>
+                    <th>平均值</th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
     <div class="result">
         <table class="table table-striped table-hover">
             <thead>
@@ -237,6 +254,14 @@ $(document).ready(function() {
     };
 
     $('#res-avg-total').text(avg_func(avg36(score_vs)));
+
+    const_vs = [1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75];
+    $.each(const_vs, function(idx, item){
+        $('.head-vs-predict').append('<td>' + item + '</td>');
+        $('.tbl-vs-predict').append('<td>' + avg_func(item) + '</td>');
+    });
+
+
 });
 
 </script>
