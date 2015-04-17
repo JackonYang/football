@@ -185,7 +185,22 @@ $(document).ready(function() {
 
     $("#res-vs1").text(calc_vs($("#const-vs1").text()));
     $("#res-vs2").text(calc_vs($("#const-vs2").text()));
+
+
+    var calc = function(target) {
+        var scores = $(".topn-"+target).map(function(i, ele){
+            score_str = $(this).text();
+            return (score_str == '-') ? null : parseInt(score_str, 10);
+        }).get();
+        console.log(scores);
+    };
+
+    calc('host');
+    calc('guest');
+    calc('vs');
+
 });
+
 </script>
 </body>
 
