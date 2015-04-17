@@ -63,7 +63,7 @@ def disp(host=u'host', guest=u'guest', start_time='', **kwargs):
 
     out_filename = os.path.join(output_dir, '%s-%s-%s.html' % (host, guest, start_time.split(' ')[0]))
     with codecs.open(out_filename, 'w', 'utf8') as f:
-        f.write(template.render(**kwargs))
+        f.write(template.render(host=host, guest=guest, start_time=start_time, **kwargs))
     print 'success! saved in %s' % os.path.abspath(out_filename)
 
 def read_ignore():

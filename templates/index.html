@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
     <meta name="viewport" content="width=device-width, initial-scale=1" /> 
 
-    <title>赛事预测</title> 
+    <title> {{ host }}(主) VS {{ guest }} -- {{ start_time }}</title>
     <link rel="stylesheet" href="../static/css/bootstrap.min.css">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries --> 
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// --> 
@@ -21,9 +21,13 @@
 <div class="container">
 
 
-    <h1> 原始数据网址 </h1>
 
-    <p> <a href="{{ url }}"> {{ url }} </a> </p>
+    <h1> {{ host }}(主) VS {{ guest }} </h1>
+
+    <p> 开赛时间: {{ start_time }} </p>
+
+    <p> 原始数据网址: <a href="{{ url }}" target="_blank"> {{ url }} </a> </p>
+
 
     <h1>统计信息</h1>
 
@@ -97,7 +101,7 @@
         </table>
     </div>
 
-    <h1> 主队历史比赛 </h1>
+    <h1> {{ host }}(主) - 历史比赛 </h1>
     <div class="host-match">
         <table class="table table-striped table-hover">
             <thead>
@@ -121,7 +125,7 @@
         </table>
     </div>
 
-    <h1> 客队历史比赛 </h1>
+    <h1> {{ guest }}(客) - 历史比赛 </h1>
     <div class="guest-match">
         <table class="table table-striped table-hover">
             <thead>
