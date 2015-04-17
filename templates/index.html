@@ -82,9 +82,15 @@
                 {% for i in range(topn) %}
                 <tr>
                     <th scope="row">{{ loop.index }}</th>
-                    <td><span id="host-row{{ loop.index }}">-</span></td>
-                    <td><span id="guest-row{{ loop.index }}">-</span></td>
-                    <td><span id="vs-row{{ loop.index }}">-</span></td>
+                    <td><span class="topn-host">{{ topn_host[i] }}</span></td>
+                    <td><span class="topn-guest">{{ topn_guest[i] }}</span></td>
+                    <td><span class="topn-vs">
+                        {% if i < vs_num %}
+                            {{ topn_vs[i] }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </span></td>
                 </tr>
                 {% endfor %}
             </tbody>
