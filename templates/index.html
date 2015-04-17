@@ -50,16 +50,7 @@
                     <th>交锋</th>
                 </tr>
             </thead>
-            <tbody>
-                {% for h, v, g in result %}
-                <tr><th scope="row">
-                        {{ result_col_name[loop.index0] }}
-                    </th>
-                    <td>{{ h }}</td>
-                    <td>{{ g }}</td>
-                    <td>{{ v }}</td>
-                </tr>
-                {% endfor %}
+            <tbody class="tbl-result">
             </tbody>
         </table>
     </div>
@@ -187,18 +178,66 @@ $(document).ready(function() {
     $("#res-vs2").text(calc_vs($("#const-vs2").text()));
 
 
-    var calc = function(target) {
-        var scores = $(".topn-"+target).map(function(i, ele){
-            score_str = $(this).text();
-            return (score_str == '-') ? null : parseInt(score_str, 10);
-        }).get();
-        console.log(scores);
+    var get_score = function(target) {
+        return $(".topn-"+target).map(function(i, ele){
+                score_str = $.trim($(this).text());
+                return (score_str == '-') ? null : parseInt(score_str, 10);
+            }).get();
     };
 
-    calc('host');
-    calc('guest');
-    calc('vs');
+    var score_host = get_score('host');
+    var score_guest = get_score('guest');
+    var score_vs = get_score('vs');
 
+    console.log(score_vs);
+
+    var append_calc = function(tag, desc, func) {
+        $('.tbl-result').append(
+                '<tr class="' + tag + '"><th scope="row"> ' + desc + '</th>'
+                + '<td class="host">' + func(score_host) + '</td>'
+                + '<td class="guest">' + func(score_guest) + '</td>'
+                + '<td class="vs">' + func(score_vs) + '</td>'
+                + '</tr>');
+    };
+
+
+    var sumall = function(scores){
+        res = 0;
+        for(var i=0; i<scores.length; i++) {
+            res += scores[i];
+        }
+        return res;
+    };
+
+    var sum3 = function(scores){
+        idx_stop = (scores.length<3) ? scores.length : 3;
+        res = 0;
+        for(var i=0; i<idx_stop; i++) {
+            res += scores[i];
+        }
+        return res;
+    };
+
+    var avgall = function(scores){
+        return sumall(scores) / scores.length;
+    };
+
+    var avg3 = function(scores){
+        num = (scores.length<3) ? scores.length : 3;
+        return sumall(scores) / num;
+    };
+
+    var avg36 = function(scores){
+        return (avg3(scores) + avgall(scores)) / 2.0
+    };
+
+
+
+    append_calc('sum6', '6 场和', sumall);
+    append_calc('sum3', '3 场和', sum3);
+    append_calc('avg6', '6 场平均', avgall);
+    append_calc('avg3', '3 场平均', avg3);
+    append_calc('avg36', '6进3平均', avg36);
 });
 
 </script>
