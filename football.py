@@ -61,7 +61,7 @@ def disp(host=u'host', guest=u'guest', start_time='', **kwargs):
     env = Environment(loader=PackageLoader('football', template_dir))
     template = env.get_template('index.html')
 
-    out_filename = os.path.join(output_dir, '%s-%s-%s.html' % (host, guest, start_time))
+    out_filename = os.path.join(output_dir, '%s-%s-%s.html' % (host, guest, start_time.split(' ')[0]))
     with codecs.open(out_filename, 'w', 'utf8') as f:
         f.write(template.render(**kwargs))
     print 'success! saved in %s' % os.path.abspath(out_filename)
