@@ -83,7 +83,7 @@ def brief(text):
     #t_prog = re.compile(ur'开赛时间(\d{4}\-\d{2}\-\d{2})')
     #t = t_prog.search(text)
     #print t.groups()
-    return m.group(1), m.group(2)
+    return m.group(1).decode('utf8'), m.group(2).decode('utf8')
 
 
 def main(url):
