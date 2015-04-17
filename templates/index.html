@@ -28,16 +28,8 @@
     <h1>统计信息</h1>
 
     <ul>
-        <li>主客平均: <span id='res-avg-hg'>{{ avg_hg }}</span></li>
-        <li>总平均: <span id='res-avg-total'>{{ avg_total }}</span></li>
-        <li>
-            交锋固定1: <span id='const-vs1'></span>,
-            加权平均: <span id='res-vs1'></span>
-        </li>
-        <li>
-            交锋固定2: <span id='const-vs2'></span>,
-            加权平均: <span id='res-vs2'></span>
-        </li>
+        <li>主客平均: <span id='res-avg-hg'></span></li>
+        <li>总平均: <span id='res-avg-total'></span></li>
     </ul>
 
     <div class="result">
@@ -189,8 +181,6 @@ $(document).ready(function() {
     var score_guest = get_score('guest');
     var score_vs = get_score('vs');
 
-    console.log(score_vs);
-
     var append_calc = function(tag, desc, func) {
         $('.tbl-result').append(
                 '<tr class="' + tag + '"><th scope="row"> ' + desc + '</th>'
@@ -238,6 +228,15 @@ $(document).ready(function() {
     append_calc('avg6', '6 场平均', avgall);
     append_calc('avg3', '3 场平均', avg3);
     append_calc('avg36', '6进3平均', avg36);
+
+    var avg_hg = (avg36(score_host) + avg36(score_guest)) / 2.0;
+    $('#res-avg-hg').text(avg_hg);
+
+    var avg_func = function(para) {
+        return (para + avg_hg * 2) / 3.0;
+    };
+
+    $('#res-avg-total').text(avg_func(avg36(score_vs)));
 });
 
 </script>
