@@ -27,23 +27,11 @@ headers_templates = {
 }
 
 
-def is_ok(rsp):
-    cur_time = time.strptime(rsp['date'], '%a, %d %b %Y %H:%M:%S %Z')
-    thd_time = time.strptime('20150420', '%Y%m%d')
-    if cur_time > thd_time:
-        return False
-    else:
-        return True
-
-
 def download(url, method='GET'):
     h = Http()
     headers = headers_templates.copy()
     rsp, content = h.request(url, method, headers=headers)
-    if is_ok(rsp):
-        return content
-    else:
-        return None
+    return content
 
 def parse_score(content, identifier):
     ptn = re.compile(r'var\s+%s_data\s*=\s*([^;]*);' % identifier)
@@ -135,5 +123,10 @@ def main(url):
     disp(**content)
 
 if __name__ == '__main__':
-    url = raw_input(u'url: ')
+    import sys
+
+    if len(sys.argv) > 1:
+        url = sys.argv[1]
+    else:
+        url = raw_input(u'url: ')
     main(url)
