@@ -55,13 +55,13 @@ def merge_list(host, guest, vs):
     return [(h, g, v) for h, g, v in zip(host, guest, vs)]
 
 
-def disp(host=u'host', guest=u'guest', **kwargs):
+def disp(host=u'host', guest=u'guest', start_time='', **kwargs):
     if not os.path.exists(output_dir):
         os.mkdir(output_dir)
     env = Environment(loader=PackageLoader('football', template_dir))
     template = env.get_template('index.html')
 
-    out_filename = os.path.join(output_dir, '%s-%s.html' % (host, guest))
+    out_filename = os.path.join(output_dir, '%s-%s-%s.html' % (host, guest, start_time))
     with codecs.open(out_filename, 'w', 'utf8') as f:
         f.write(template.render(**kwargs))
     print 'success! saved in %s' % os.path.abspath(out_filename)
@@ -80,10 +80,9 @@ def brief(text):
     prog = re.compile(ur'<meta name="keywords" content="([^,]*) VS ([^,]*),')
     m = prog.search(text)
 
-    #t_prog = re.compile(ur'开赛时间(\d{4}\-\d{2}\-\d{2})')
-    #t = t_prog.search(text)
-    #print t.groups()
-    return m.group(1).decode('utf8'), m.group(2).decode('utf8')
+    t_prog = re.compile(ur"var strTime='([^;]*)';")
+    t = t_prog.search(text)
+    return m.group(1).decode('utf8'), m.group(2).decode('utf8'), t.group(1)
 
 
 def main(url):
@@ -99,7 +98,7 @@ def main(url):
         print 'error! contact: jiekunyang@gmail.com'
         return None
 
-    content['host'], content['guest'] = brief(c)
+    content['host'], content['guest'], content['start_time'] = brief(c)
 
     content['orig_host'] = parse_score(c, 'h')
     content['orig_guest'] = parse_score(c, 'a')
