@@ -15,8 +15,7 @@ template_dir = os.path.join(BASE_DIR, "templates")
 output_dir = os.path.join(BASE_DIR, "output")
 ignore_filename = os.path.join(BASE_DIR, "match_ignore.ini")
 
-headers_templates = {
-    'Connection': 'keep-alive',
+headers_templates = { 'Connection': 'keep-alive',
     'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/534.24 (KHTML, like Gecko) Chrome/11.0.696.65 Safari/534.24',
     'Content-type': 'application/x-www-form-urlencoded',
     'Accept': '*/*',
@@ -77,12 +76,17 @@ def read_ignore():
 
 
 def brief(text):
+    host, guest, timestamp = [''] * 3
     prog = re.compile(ur'<meta name="keywords" content="([^,]*) VS ([^,]*),')
     m = prog.search(text)
+    if m is not None:
+        host, guest = m.group(1).decode('utf8'), m.group(2).decode('utf8')
 
     t_prog = re.compile(ur"var strTime='([^;]*)';")
     t = t_prog.search(text)
-    return m.group(1).decode('utf8'), m.group(2).decode('utf8'), t.group(1)
+    if t is not None:
+        timestamp = t.group(1)
+    return host, guest, timestamp
 
 
 def main(url):
