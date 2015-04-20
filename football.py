@@ -46,19 +46,6 @@ def filter_topn(orig, exclude=[], topn=6):
     # time, total score, matchtype
     return [item[1] for item in orig if item[2] not in exclude][:topn]
 
-def calc(scores, peak=3):
-    # sum6, sum3, avg6, avg3, avg
-    sum_total = sum(scores)
-    sum_peak = sum(scores[:peak])
-    avg_total = 1.0 * sum_total / len(scores)
-    avg_peak = 1.0 * sum_peak / peak
-    avg = (avg_total + avg_peak) / 2
-    return sum_total, sum_peak, avg_total, avg_peak, avg
-
-def merge_list(host, guest, vs):
-    return [(h, g, v) for h, g, v in zip(host, guest, vs)]
-
-
 def disp(host=u'host', guest=u'guest', start_time='', **kwargs):
     if not os.path.exists(output_dir):
         os.mkdir(output_dir)
@@ -135,15 +122,6 @@ def main(url):
     content['topn_guest'] = topn_guest
     content['topn_vs'] = topn_vs
     content['vs_num'] = len(topn_vs)
-
-    calc_host = calc(topn_host)
-    calc_guest = calc(topn_guest)
-    calc_vs = calc(topn_vs)
-
-    content['result'] = merge_list(calc_host, calc_guest, calc_vs)
-    content['result_col_name'] = [u'6场和', u'3场和', u'6场平均', u'3场平均', u'6进3平均']
-    content['avg_total'] = (calc_host[-1] + calc_guest[-1] + calc_vs[-1]) / 3.0
-    content['avg_hg'] = (calc_host[-1] + calc_guest[-1]) / 2.0
 
     disp(**content)
 

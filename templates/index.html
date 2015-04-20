@@ -230,12 +230,20 @@ $(document).ready(function() {
     };
 
     var avgall = function(scores){
-        return sumall(scores) / scores.length;
+        if (scores.length== 0) {
+            return 0;
+        } else {
+            return sumall(scores) / scores.length;
+        }
     };
 
     var avg3 = function(scores){
         num = (scores.length<3) ? scores.length : 3;
-        return sum3(scores) / num;
+        if (num == 0) {
+            return 0;
+        } else {
+            return sum3(scores) / num;
+        }
     };
 
     var avg36 = function(scores){
