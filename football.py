@@ -36,7 +36,11 @@ def download(url, method='GET'):
 def parse_score(content, identifier):
     ptn = re.compile(r'var\s+%s_data\s*=\s*([^;]*);' % identifier)
     data_str = ptn.search(content).group(1).replace("\"", "\\\"").replace("'", "\"")
-    return [(item[0], item[8] + item[9], item[2]) for item in json.loads(data_str)]
+    try:
+        return [(item[0], item[8] + item[9], item[2]) for item in json.loads(data_str)]
+    except:
+        return [(item[0], item[8] + item[9], item[2]) for item in json.loads(data_str.decode('gbk').encode('utf8'))]
+
 
 def filter_topn(orig, exclude=[], topn=6):
     # time, total score, matchtype
@@ -61,7 +65,9 @@ def disp(host=u'host', guest=u'guest', start_time='', **kwargs):
     env = Environment(loader=PackageLoader('football', template_dir))
     template = env.get_template('index.html')
 
-    out_filename = os.path.join(output_dir, '%s-%s-%s.html' % (host, guest, start_time.split(' ')[0]))
+    out_filename = time.time()
+    if host != '' and guest != '':
+        out_filename = os.path.join(output_dir, '%s-%s-%s.html' % (host, guest, start_time.split(' ')[0]))
     with codecs.open(out_filename, 'w', 'utf8') as f:
         f.write(template.render(host=host, guest=guest, start_time=start_time, **kwargs))
     print 'success! saved in %s' % os.path.abspath(out_filename)
@@ -76,12 +82,24 @@ def read_ignore():
     return matches
 
 
+def convert(orig):
+    res = ''
+    try:
+        res = orig.decode('utf8')
+    except:
+        try:
+            res = orig.decode('gbk')
+        except:
+            pass
+    return res
+
+
 def brief(text):
     host, guest, timestamp = [''] * 3
     prog = re.compile(ur'<meta name="keywords" content="([^,]*) VS ([^,]*),')
     m = prog.search(text)
     if m is not None:
-        host, guest = m.group(1).decode('utf8'), m.group(2).decode('utf8')
+        host, guest = convert(m.group(1)), convert(m.group(2))
 
     t_prog = re.compile(ur"var strTime='([^;]*)';")
     t = t_prog.search(text)
