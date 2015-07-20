@@ -13,7 +13,7 @@ import utils
 
 # match list
 url_ml = 'http://live.win007.com/vbsxml/bfdata.js?%s'  # timestamp
-url_his_ml = 'http://bf.win007.com/football/hg/Over_%s.htm' # match day 20140712
+url_his_ml = 'http://bf.win007.com/football/hg/Over_%s.htm' # match day. e.g. 20140712
 
 
 def req(url, encode='gbk', method='GET'):
@@ -39,7 +39,7 @@ fixed_info = (  # match list, bf_data cols
         )
 
 
-# 当前比赛列表
+# 即将进行的比赛
 def cur_match_list():
     url = url_ml % utils.url_timestamp()
     data = req(url)

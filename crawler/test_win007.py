@@ -11,13 +11,13 @@ def print_line(title, width=60, token='-'):
             )
 
 
-# 即将进行的比赛
-
 def disp_ml(data):
     """[{}, {}, ... ]"""
     for m in data:
         print ',  '.join(['%s: %s' % (k, v) for k, v in m.items()])
 
+
+# 即将进行的比赛列表
 print_line('Current Match List')
 ml = cur_match_list()
 # disp_ml(ml)
