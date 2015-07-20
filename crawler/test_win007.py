@@ -28,5 +28,5 @@ print 'total: %s' % len(ml)
 match_day = '20140712'
 print_line('History - Match List')
 his_ml = his_match_list(match_day)
-disp_ml(his_ml)
+# disp_ml(his_ml)
 print 'total: %s' % len(his_ml)
