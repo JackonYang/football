@@ -13,6 +13,7 @@ import utils
 
 # match list
 url_ml = 'http://live.win007.com/vbsxml/bfdata.js?%s'  # timestamp
+url_his_ml = 'http://bf.win007.com/football/hg/Over_%s.htm' # match day 20140712
 
 
 def req(url, encode='gbk', method='GET'):
@@ -50,3 +51,33 @@ def cur_match_list():
     ml_ptn = re.compile(r'A\[\d+\]="(.*?)"\.split')
     m = [item.split('^') for item in ml_ptn.findall(data)]
     return [{k: item[idx] for k, idx in fixed_info} for item in m]
+
+
+# 历史比赛列表
+def his_match_list(match_day):
+    url = url_his_ml % match_day
+    data = req(url)
+
+    if data is None:
+        print 'request his_match_list error'  # raise error
+        return
+
+    item_ptn = re.compile(r'<tr height[^>]+>(.*?)</tr>')
+    field_ptn = re.compile(r'<td[^>]*>(.*?)</td>')
+
+    ret = []
+
+    for item in item_ptn.findall(data):
+        m = field_ptn.findall(item)
+        ret.append({
+            "match_id": utils.retrieve_id(m[-1]),
+            "league": m[0],
+            "home": utils.drop(m[3]),
+            "visiting": utils.drop(m[5]),
+            "match_time": m[1],
+            "is_betting": utils.is_bet(m[-1]),
+            "full_score": utils.drop_font(m[4]),
+            "half_score": utils.drop_font(m[6]),
+            "status": m[2],
+            })
+    return ret
