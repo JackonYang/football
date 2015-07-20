@@ -63,3 +63,23 @@ A[2]="1090583^#0066FF^中超^中超^CHA CSL^北京国安^北京國安^Beijing Gu
     </td>
 </tr>
 ```
+
+#### 欧赔
+
+正在进行 / 已经结束的比赛, 欧赔数据在 js 文件中, 动态生成.
+
+js 文件在 http://1x2.nowscore.com/ 服务器上
+
+最后 2 行分别是变量 game 和 gameDetail
+
+game 中是足彩公司的 ID 和 中英文名字
+gameDetail 是赔率的历史记录, 需要解析.
+
+在不同的页面中, 公司 ID 不一样
+
+欧赔重点关注 4 家公司数据
+
+- bet 365 bet 365(英国)
+- Redbet Redbet(马耳他)
+- Crown SB(Crown)
+- Macauslot 澳门
