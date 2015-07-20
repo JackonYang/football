@@ -15,6 +15,8 @@ import utils
 url_ml = 'http://live.win007.com/vbsxml/bfdata.js?%s'  # timestamp
 url_his_ml = 'http://bf.win007.com/football/hg/Over_%s.htm' # match day. e.g. 20140712
 
+url_Europe = 'http://1x2.nowscore.com/%s.js'  # match_id 欧盘
+
 
 def req(url, encode='gbk', method='GET'):
     h = Http(timeout=2)
@@ -39,7 +41,7 @@ fixed_info = (  # match list, bf_data cols
         )
 
 
-# 即将进行的比赛
+# 即将进行的比赛列表
 def cur_match_list():
     url = url_ml % utils.url_timestamp()
     data = req(url)
@@ -81,3 +83,31 @@ def his_match_list(match_day):
             "status": m[2],
             })
     return ret
+
+
+# 欧赔 赔率历史记录与变化时间
+def europe(match_id):
+    """{company_id: [history list]}"""
+    url = url_Europe % match_id
+    data = req(url, 'utf8')
+
+    if data is None:
+        print 'request europe %s error' % match_id  # raise error
+        return
+
+    idx_start = data.find('game=Array')  # brief info
+    idx_pause = data.find('var gameDetail')  # var gameDetail line
+
+    match_brief = data[idx_start: idx_pause]  # company id
+    match_detail = data[idx_pause:]  # history data of a company
+
+    brief_ptn = re.compile(r'"(.+?)"')
+    detail_ptn = re.compile(r'"(?:(\d+)\^(.+?))"')
+
+    companys = {info[1]: info[2] for info in \
+            [c.split('|') for c in brief_ptn.findall(match_brief)]}
+
+    return {
+        companys[company_id]: [item.split('|') for item in history.split(';') if item] \
+            for company_id, history in detail_ptn.findall(match_detail)
+        }

@@ -1,5 +1,5 @@
 # -*- Encoding: utf-8 -*-
-from win007 import cur_match_list, his_match_list
+from win007 import cur_match_list, his_match_list, europe
 
 
 def print_line(title, width=60, token='-'):
@@ -30,3 +30,18 @@ print_line('History - Match List')
 his_ml = his_match_list(match_day)
 # disp_ml(his_ml)
 print 'total: %s' % len(his_ml)
+
+
+def disp_detail(data):
+    """{key: [[1, 2, 3, date]]}"""
+    for company_id, history in data.items():
+        print company_id
+        print '\n'.join([', '.join(item) for item in history])
+
+match_id = '1003433'
+
+# 欧赔
+print_line('Europe - Match ID: %s' % match_id)
+ret = europe(match_id)
+disp_detail(ret)
+print 'total: %s' % len(ret)
