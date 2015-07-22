@@ -10,12 +10,12 @@ import socket
 from httplib2 import Http
 
 import utils
-
 # match list
 url_ml = 'http://live.win007.com/vbsxml/bfdata.js?%s'  # timestamp
 url_his_ml = 'http://bf.win007.com/football/hg/Over_%s.htm' # match day. e.g. 20140712
 
 url_Europe = 'http://1x2.nowscore.com/%s.js'  # match_id 欧盘
+url_Asian = 'http://vip.win007.com/AsianOdds_n.aspx?id=%s'  # match_id 亚盘
 
 
 def req(url, encode='gbk', method='GET'):
@@ -111,3 +111,24 @@ def europe(match_id):
         companys[company_id]: [item.split('|') for item in history.split(';') if item] \
             for company_id, history in detail_ptn.findall(match_detail)
         }
+
+
+# 亚盘 赔率历史记录与变化时间
+def asian(match_id):
+    url = url_Asian % match_id
+    data = req(url)
+
+    if data is None:
+        print 'request Asian %s error' % match_id  # raise error
+        return
+
+    item_ptn = re.compile(r'<tr bgcolor[^>]+>(.*?)\<\/tr\>', re.DOTALL)
+    field_ptn = re.compile(r'<td[^>]*>(.*?)</td>', re.DOTALL)
+
+    ret = dict()
+
+    for item in item_ptn.findall(data):
+        m = field_ptn.findall(item)
+        if m[0] and ''.join(m[2:11]):
+            ret[utils.drop_img(m[0])] = [m[2:5], m[8:11], m[5:8]]
+    return ret

@@ -1,5 +1,5 @@
 # -*- Encoding: utf-8 -*-
-from win007 import cur_match_list, his_match_list, europe
+from win007 import cur_match_list, his_match_list, europe, asian
 
 
 def print_line(title, width=60, token='-'):
@@ -43,5 +43,12 @@ match_id = '1003433'
 # 欧赔
 print_line('Europe - Match ID: %s' % match_id)
 ret = europe(match_id)
-disp_detail(ret)
+#  disp_detail(ret)
+print 'total: %s' % len(ret)
+
+
+# 亚盘
+print_line('Asian - Match ID: %s' % match_id)
+ret = asian(match_id)
+# disp_detail(ret)
 print 'total: %s' % len(ret)
