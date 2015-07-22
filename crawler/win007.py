@@ -113,13 +113,12 @@ def europe(match_id):
         }
 
 
-# 亚盘 赔率历史记录与变化时间
-def asian(match_id):
-    url = url_Asian % match_id
+def _match_info(match_id, url_ptn, name):
+    url = url_ptn % match_id
     data = req(url)
 
     if data is None:
-        print 'request Asian %s error' % match_id  # raise error
+        print 'request %s %s error' % (name, match_id)  # raise error
         return
 
     item_ptn = re.compile(r'<tr bgcolor[^>]+>(.*?)\<\/tr\>', re.DOTALL)
@@ -132,3 +131,8 @@ def asian(match_id):
         if m[0] and ''.join(m[2:11]):
             ret[utils.drop_img(m[0])] = [m[2:5], m[8:11], m[5:8]]
     return ret
+
+
+# 亚盘 赔率历史记录与变化时间
+def asian(match_id):
+    return _match_info(match_id, url_Asian, 'Asian')
