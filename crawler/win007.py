@@ -16,6 +16,7 @@ url_his_ml = 'http://bf.win007.com/football/hg/Over_%s.htm' # match day. e.g. 20
 
 url_Europe = 'http://1x2.nowscore.com/%s.js'  # match_id 欧盘
 url_Asian = 'http://vip.win007.com/AsianOdds_n.aspx?id=%s'  # match_id 亚盘
+url_Overdown = 'http://vip.win007.com/OverDown_n.aspx?id=%s'  # match_id 大小球
 
 
 def req(url, encode='gbk', method='GET'):
@@ -136,3 +137,8 @@ def _match_info(match_id, url_ptn, name):
 # 亚盘 赔率历史记录与变化时间
 def asian(match_id):
     return _match_info(match_id, url_Asian, 'Asian')
+
+
+# 大小球 赔率历史记录与变化时间
+def overdown(match_id):
+    return _match_info(match_id, url_Overdown, 'OverDown')

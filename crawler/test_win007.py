@@ -1,5 +1,5 @@
 # -*- Encoding: utf-8 -*-
-from win007 import cur_match_list, his_match_list, europe, asian
+from win007 import cur_match_list, his_match_list, europe, asian, overdown
 
 
 def print_line(title, width=60, token='-'):
@@ -50,5 +50,12 @@ print 'total: %s' % len(ret)
 # 亚盘
 print_line('Asian - Match ID: %s' % match_id)
 ret = asian(match_id)
+# disp_detail(ret)
+print 'total: %s' % len(ret)
+
+
+# 大小球
+print_line('OverDown - Match ID: %s' % match_id)
+ret = overdown(match_id)
 # disp_detail(ret)
 print 'total: %s' % len(ret)
