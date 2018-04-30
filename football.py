@@ -33,13 +33,15 @@ def download(url, method='GET'):
     rsp, content = h.request(url, method, headers=headers)
     return content
 
-def parse_score(content, identifier):
+def parse_score(content, identifier, name=''):
     ptn = re.compile(r'var\s+%s_data\s*=\s*([^;]*);' % identifier)
     data_str = ptn.search(content).group(1).replace("\"", "\\\"").replace("'", "\"")
+
+    idx = 5 if identifier == 'h' else 7
     try:
-        return [(item[0], item[8] + item[9], item[2]) for item in json.loads(data_str)]
+        return [(item[0], item[8] + item[9], item[2]) for item in json.loads(data_str) if name in item[idx]]
     except:
-        return [(item[0], item[8] + item[9], item[2]) for item in json.loads(data_str.decode('gbk').encode('utf8'))]
+        return [(item[0], item[8] + item[9], item[2]) for item in json.loads(data_str.decode('gbk').encode('utf8')) if name in item[idx]]
 
 
 def filter_topn(orig, exclude=[], topn=6):
@@ -110,8 +112,8 @@ def main(url):
 
     content['host'], content['guest'], content['start_time'] = brief(c)
 
-    content['orig_host'] = parse_score(c, 'h')
-    content['orig_guest'] = parse_score(c, 'a')
+    content['orig_host'] = parse_score(c, 'h', content['host'])
+    content['orig_guest'] = parse_score(c, 'a', content['guest'])
     content['orig_vs'] = parse_score(c, 'v')
 
     topn_host = filter_topn(content['orig_host'], content['exclude_match'], content['topn'])
